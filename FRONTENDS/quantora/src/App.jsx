@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/Registration";
 import Admin from "./pages/Admin";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   return (
@@ -14,6 +15,9 @@ export default function App() {
 
         {/* Admin login page */}
         <Route path="/admin" element={<Admin />} />
+
+        {/* Dashboard page */}
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* Catch-all route for 404s */}
         <Route path="*" element={<h1 className="text-center text-white mt-20">404 – Page Not Found</h1>} />
