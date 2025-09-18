@@ -2,6 +2,8 @@ import cors from "cors";
 import express from "express";
 import registrationRouter from "./config/Registration.js";
 import adminRouter from "./routes/Admin.js";
+import productRoutes from "./routes/productRoutes.js";
+import productAPIRouter from "./APIs/productAPI.js";
 import pool from "./config/db.js";
 
 class WebServer {
@@ -32,6 +34,8 @@ const Quantora = new WebServer(5000);
 // Middleware / Routers
 Quantora.app.use("/api/auth", registrationRouter);
 Quantora.app.use("/api/auth", adminRouter);
+Quantora.app.use("/api", productRoutes);
+
 
 // Default routes
 Quantora.registerDefaultRoutes();
