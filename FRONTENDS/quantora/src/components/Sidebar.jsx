@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 export default function Sidebar() {
   const links = [
-    { name: "Dashboard", icon: "dashboard", href: "#" },
-    { name: "Manage Products", icon: "inventory_2", href: "#" },
+    { name: "Dashboard", icon: "dashboard", href: "dashboard" },
+    { name: "Manage Products", icon: "inventory_2", href: "Manage_Products" },
     { name: "Invoices", icon: "receipt_long", href: "#" },
   ];
 
