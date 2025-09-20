@@ -5,7 +5,8 @@ export default function Sidebar() {
   const links = [
     { name: "Dashboard", icon: "dashboard", href: "dashboard" },
     { name: "Manage Products", icon: "inventory_2", href: "Manage_Products" },
-    { name: "Invoices", icon: "receipt_long", href: "#" },
+    { name: "Record Sales", icon: "edit_note", href: "recordSales" },
+    { name: "Invoices", icon: "receipt_long", href: "invoices" },
   ];
 
   return (
@@ -31,3 +32,10 @@ export default function Sidebar() {
     </motion.aside>
   );
 }
+
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import { motion } from "framer-motion";
 import { useState } from "react";
+import apiFetch from "../utils/apiFetch";
 import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
@@ -19,7 +20,7 @@ export default function Admin() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/admin", {
+      const res = await apiFetch("http://localhost:5000/api/auth/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

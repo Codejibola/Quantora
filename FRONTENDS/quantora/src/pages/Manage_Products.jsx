@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
+import apiFetch from "../utils/apiFetch.js";
 import { Plus, Edit, Trash2 } from "lucide-react";
 
 export default function ManageProducts() {
@@ -22,7 +23,7 @@ export default function ManageProducts() {
 
   const fetchProducts = () => {
     if (!token) return;
-    fetch("http://localhost:5000/api/products", {
+    apiFetch("http://localhost:5000/api/products", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
