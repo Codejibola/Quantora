@@ -18,5 +18,13 @@ export const updateProduct = (id, userId, name, price, stock, category) =>
     [name, price, stock, category, id, userId]
   );
 
+  export const updateProductStock = (id, userId, qtySold) =>
+  pool.query(
+    `UPDATE products
+     SET units = units - ?
+     WHERE id = ? AND user_id = ? AND units >= ?`,
+    [qtySold, id, userId, qtySold]
+  );
+
 export const deleteProduct = (id, userId) =>
   pool.query("DELETE FROM products WHERE id = ? AND user_id = ?", [id, userId]);

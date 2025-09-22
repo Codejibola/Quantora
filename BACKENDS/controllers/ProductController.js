@@ -1,4 +1,3 @@
-// controllers/productController.js
 import * as Product from "../models/product_Model.js";
 
 // GET /api/products
@@ -55,6 +54,22 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+//PUT /api/products/update-stock
+export const updateStock = async (req, res) => {
+  const { productId, quantity } = req.body;
+  try {
+    const [result] = await Product.updateProductStock(productId, req.userId, quantity);
+    if (result.affectedRows === 0) {
+      return res.status(400).json({ message: "Insufficient stock or product not found." });
+    }
+    res.json({ message: "Sale recorded and stock updated." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error." });
+  }
+};
+
 
 // DELETE /api/products/:id
 export const deleteProduct = async (req, res) => {
