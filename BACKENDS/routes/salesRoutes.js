@@ -5,7 +5,7 @@ import {
   getAllSales,
   recordSale,
   getDailySales,
-} from "../controllers/salesController.js";
+} from "../controllers/SalesController.js";
 
 const router = express.Router();
 
