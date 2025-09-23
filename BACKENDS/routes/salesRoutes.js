@@ -1,4 +1,3 @@
-// routes/salesRoutes.js
 import express from "express";
 import { authenticate } from "../config/Authenticate.js";
 import {
