@@ -1,12 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const links = [
-    { name: "Dashboard", icon: "dashboard", href: "dashboard" },
-    { name: "Manage Products", icon: "inventory_2", href: "/Manage_Products" },
-    { name: "Record Sales", icon: "edit_note", href: "/recordSales" },
-    { name: "Invoices", icon: "receipt_long", href: "/invoices" },
+    { name: "Dashboard", icon: "dashboard", to: "/dashboard" },
+    { name: "Manage Products", icon: "inventory_2", to: "/Manage_Products" },
+    { name: "Record Sales", icon: "edit_note", to: "/recordSales" },
+    { name: "Invoices", icon: "receipt_long", to: "/invoices" },
   ];
 
   return (
@@ -16,14 +17,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         <h1 className="text-2xl font-bold">Dashboard</h1>
         <nav className="space-y-4">
           {links.map((link) => (
-            <a
+            <Link
               key={link.name}
-              href={link.href}
+              to={link.to}
               className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium"
             >
               <span className="material-icons">{link.icon}</span>
               {link.name}
-            </a>
+            </Link>
           ))}
         </nav>
       </aside>
