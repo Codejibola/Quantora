@@ -18,8 +18,8 @@ export default function ManageProducts() {
   });
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
   const token = localStorage.getItem("token");
+  const [menuOpen, setMenuOpen] = useState(false); 
 
   const fetchProducts = () => {
     if (!token) return;
@@ -124,10 +124,10 @@ export default function ManageProducts() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+      <Sidebar isOpen={menuOpen} setIsOpen={setMenuOpen} />
 
       <div className="flex-1 flex flex-col">
-        <Topbar title="Manage Products" />
+        <Topbar onMenuClick={() => setMenuOpen(true)} />
 
         <main className="px-2 sm:px-4 md:px-6 py-6 space-y-6">
           {/* Header Row */}
