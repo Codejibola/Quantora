@@ -46,7 +46,7 @@ export default function Admin() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md p-8 rounded-xl shadow-lg bg-white border border-gray-200"
+        className="w-full max-w-md p-8 rounded-xl shadow-lg bg-black border border-gray-200"
       >
         <motion.h2
           initial={{ scale: 0.8 }}

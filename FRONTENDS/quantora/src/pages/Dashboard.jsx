@@ -1,10 +1,9 @@
 //eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const data = [
   { month: "Jan", sales: 250 },
@@ -17,14 +16,17 @@ const data = [
 ];
 
 export default function Dashboard() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50 flex relative">
+      <Sidebar isOpen={menuOpen} setIsOpen={setMenuOpen} />
 
       <div className="flex-1 flex flex-col">
-        <Topbar />
+        <Topbar onMenuClick={() => setMenuOpen(true)} />
 
         <main className="flex-1 p-8 space-y-8">
+          {/* Cards */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -36,6 +38,7 @@ export default function Dashboard() {
             <Card title="Invoices" icon="receipt_long" desc="View and manage invoices" />
           </motion.div>
 
+          {/* Chart + Activities */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -57,7 +60,7 @@ export default function Dashboard() {
             <section className="bg-white rounded-xl shadow p-6">
               <h2 className="text-xl font-semibold mb-4">Recent Activities</h2>
               <ul className="space-y-3">
-                {["Order created","Invoice paid","New product added"].map((activity, i) => (
+                {["Order created", "Invoice paid", "New product added"].map((activity, i) => (
                   <li
                     key={i}
                     className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition"
@@ -70,7 +73,6 @@ export default function Dashboard() {
                 ))}
               </ul>
             </section>
-
           </div>
         </main>
       </div>
