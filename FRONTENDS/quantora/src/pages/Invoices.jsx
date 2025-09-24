@@ -21,7 +21,7 @@ export default function Invoices() {
   // Fetch total sales per day for the selected year
   useEffect(() => {
     if (!token) return;
-    apiFetch(`http://localhost:5000/api/sales/daily?year=${year}`, {
+    apiFetch(`https://quantora-ap7u.onrender.com/api/sales/daily?year=${year}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -35,7 +35,7 @@ export default function Invoices() {
   const handleDownload = async (date) => {
     try {
       const res = await apiFetch(
-        `http://localhost:5000/api/sales/daily/${date}/pdf`,
+        `https://quantora-ap7u.onrender.com/api/sales/daily/${date}/pdf`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (!res.ok) throw new Error("Download failed");
@@ -53,7 +53,7 @@ export default function Invoices() {
 
   const handleView = (date) => {
     window.open(
-      `http://localhost:5000/api/sales/daily/${date}/view?token=${token}`,
+      `https://quantora-ap7u.onrender.com/api/sales/daily/${date}/view?token=${token}`,
       "_blank"
     );
   };

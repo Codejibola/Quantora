@@ -28,7 +28,7 @@ export default function App() {
         {/*Invoices page */}
         <Route path="/invoices" element={<Invoices />} />
 
-        {/*Invoices page */}
+        {/* RecordSales page */}
         <Route path="/recordSales" element={<RecordSales />} />
 
         {/* Catch-all route for 404s */}

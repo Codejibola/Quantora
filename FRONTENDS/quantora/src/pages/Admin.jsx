@@ -20,7 +20,7 @@ export default function Admin() {
     setLoading(true);
 
     try {
-      const res = await apiFetch("http://localhost:5000/api/auth/admin", {
+      const res = await apiFetch("https://quantora-ap7u.onrender.com/api/auth/admin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

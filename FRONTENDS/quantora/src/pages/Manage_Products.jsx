@@ -17,13 +17,13 @@ export default function ManageProducts() {
     category: "",
   });
   const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // NEW
+  const [searchTerm, setSearchTerm] = useState("");
 
   const token = localStorage.getItem("token");
 
   const fetchProducts = () => {
     if (!token) return;
-    apiFetch("http://localhost:5000/api/products", {
+    apiFetch("https://quantora-ap7u.onrender.com/api/products", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -61,8 +61,8 @@ export default function ManageProducts() {
 
     try {
       const url = editingId
-        ? `http://localhost:5000/api/products/${editingId}`
-        : "http://localhost:5000/api/products";
+        ? `https://quantora-ap7u.onrender.com/api/products/${editingId}`
+        : "https://quantora-ap7u.onrender.com/api/products";
       const method = editingId ? "PUT" : "POST";
 
       const res = await fetch(url, {
@@ -92,7 +92,7 @@ export default function ManageProducts() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`https://quantora-ap7u.onrender.com/api/products/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

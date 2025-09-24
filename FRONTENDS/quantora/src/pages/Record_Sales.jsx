@@ -17,7 +17,7 @@ export default function RecordSales() {
   // Load products/stock
   const fetchProducts = () => {
     if (!token) return;
-    apiFetch("http://localhost:5000/api/products", {
+    apiFetch("https://quantora-ap7u.onrender.com/api/products", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -28,7 +28,7 @@ export default function RecordSales() {
   // Load all recorded sales from DB
   const fetchSales = () => {
     if (!token) return;
-    apiFetch("http://localhost:5000/api/sales", {
+    apiFetch("https://quantora-ap7u.onrender.com/api/sales", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -47,8 +47,8 @@ export default function RecordSales() {
     if (!selected || !quantity || !price) return;
     setLoading(true);
     try {
-      // 1️⃣ update product stock
-      const res = await apiFetch("http://localhost:5000/api/updateStock", {
+      // 1 update product stock
+      const res = await apiFetch("https://quantora-ap7u.onrender.com/api/updateStock", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,8 +64,8 @@ export default function RecordSales() {
         throw new Error(msg || "Failed to update product stock");
       }
 
-      // 2️⃣ record sale in sales table
-      const resSale = await apiFetch("http://localhost:5000/api/sales", {
+      // 2 record sale in sales table
+      const resSale = await apiFetch("https://quantora-ap7u.onrender.com/api/sales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
