@@ -47,15 +47,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
           <nav className="space-y-4">
             {links.map((link) => (
-              <a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.to}
                 className="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 <span className="material-icons">{link.icon}</span>
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
         </motion.aside>
