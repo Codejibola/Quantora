@@ -11,29 +11,29 @@ export default function RecordSales() {
   const [selected, setSelected] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState("");
-  const [sales, setSales] = useState([]);      // <-- will now hold DB sales
+  const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // <— for mobile sidebar
 
-  // Load products/stock
+  /* ------------ Fetch Helpers ------------ */
   const fetchProducts = () => {
     if (!token) return;
     apiFetch("https://quantora-ap7u.onrender.com/api/products", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error(err));
+      .then((r) => r.json())
+      .then(setProducts)
+      .catch(console.error);
   };
 
-  // Load all recorded sales from DB
   const fetchSales = () => {
     if (!token) return;
     apiFetch("https://quantora-ap7u.onrender.com/api/sales", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
-      .then((data) => setSales(data))
-      .catch((err) => console.error(err));
+      .then((r) => r.json())
+      .then(setSales)
+      .catch(console.error);
   };
 
   useEffect(() => {
@@ -41,14 +41,13 @@ export default function RecordSales() {
     fetchSales();
   }, [token]);
 
-  // Add a sale: update stock AND record in sales table
+  /* ------------ Submit ------------ */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selected || !quantity || !price) return;
     setLoading(true);
     try {
-      // 1 update product stock
-      const res = await apiFetch("https://quantora-ap7u.onrender.com/api/updateStock", {
+      await apiFetch("https://quantora-ap7u.onrender.com/api/updateStock", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,13 +58,8 @@ export default function RecordSales() {
           quantity: Number(quantity),
         }),
       });
-      if (!res.ok) {
-        const msg = await res.text();
-        throw new Error(msg || "Failed to update product stock");
-      }
 
-      // 2 record sale in sales table
-      const resSale = await apiFetch("https://quantora-ap7u.onrender.com/api/sales", {
+      await apiFetch("https://quantora-ap7u.onrender.com/api/sales", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,16 +71,9 @@ export default function RecordSales() {
           price: Number(price),
         }),
       });
-      if (!resSale.ok) {
-        const msg = await resSale.text();
-        throw new Error(msg || "Failed to record sale");
-      }
 
-      // refresh lists
       fetchProducts();
       fetchSales();
-
-      // reset form
       setSelected("");
       setQuantity(1);
       setPrice("");
@@ -99,19 +86,22 @@ export default function RecordSales() {
 
   return (
     <div className="flex min-h-screen bg-white text-gray-900">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Topbar title="Record Sales" />
+      {/* Sidebar slides in/out on small screens */}
+      <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
 
-        <main className="p-6 space-y-6">
-          {/* Sales Entry Form */}
+      <div className="flex-1 flex flex-col">
+        {/* Pass toggle handler to Topbar */}
+        <Topbar title="Record Sales" onMenuClick={() => setMenuOpen(true)} />
+
+        <main className="p-4 sm:p-6 space-y-6">
+          {/* -------- Sales Entry Form -------- */}
           <motion.form
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             onSubmit={handleSubmit}
-            className="bg-white border border-gray-200 rounded-xl shadow p-6 max-w-xl space-y-4"
+            className="bg-white border border-gray-200 rounded-xl shadow p-4 sm:p-6 max-w-xl w-full mx-auto space-y-4"
           >
-            <h2 className="text-xl font-semibold text-teal-700 mb-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-teal-700 mb-2">
               Add Today’s Sale
             </h2>
 
@@ -131,7 +121,8 @@ export default function RecordSales() {
               </select>
             </label>
 
-            <div className="grid grid-cols-2 gap-4">
+            {/* Stack on mobile, 2-cols on ≥sm */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <label className="block">
                 <span className="text-sm text-gray-700">Quantity</span>
                 <input
@@ -158,37 +149,40 @@ export default function RecordSales() {
 
             <button
               disabled={loading}
-              className={
+              className={`w-full py-2 rounded font-semibold mt-2 transition-colors ${
                 loading
-                  ? "w-full bg-blue-300 hover:bg-blue-200 text-white py-2 rounded font-semibold mt-2 transition-colors"
-                  : "w-full bg-blue-600 hover:bg-blue-400 text-white py-2 rounded font-semibold mt-2 transition-colors"
-              }
+                  ? "bg-blue-300 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-500 text-white"
+              }`}
             >
               {loading ? "Saving…" : "Add Sale"}
             </button>
           </motion.form>
 
-          {/* Sales Table (from DB) */}
+          {/* -------- Sales Table -------- */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow"
           >
-            <table className="min-w-full border-collapse">
+            <table className="min-w-full text-sm sm:text-base">
               <thead>
                 <tr className="bg-teal-50 text-left">
-                  <th className="py-3 px-4">S/N</th>
-                  <th className="py-3 px-4">Product</th>
-                  <th className="py-3 px-4">Qty</th>
-                  <th className="py-3 px-4">Price</th>
-                  <th className="py-3 px-4">Total</th>
-                  <th className="py-3 px-4">Date</th>
+                  <th className="py-3 px-2 sm:px-4">S/N</th>
+                  <th className="py-3 px-2 sm:px-4">Product</th>
+                  <th className="py-3 px-2 sm:px-4">Qty</th>
+                  <th className="py-3 px-2 sm:px-4">Price</th>
+                  <th className="py-3 px-2 sm:px-4">Total</th>
+                  <th className="py-3 px-2 sm:px-4">Date</th>
                 </tr>
               </thead>
               <tbody>
                 {sales.length === 0 ? (
                   <tr>
-                    <td colSpan="6" className="py-6 px-4 text-center text-gray-500">
+                    <td
+                      colSpan="6"
+                      className="py-6 px-4 text-center text-gray-500"
+                    >
                       No sales recorded.
                     </td>
                   </tr>
@@ -198,14 +192,19 @@ export default function RecordSales() {
                       key={s.id || i}
                       className="border-b border-gray-200 hover:bg-teal-50 transition"
                     >
-                      <td className="py-3 px-4">{i + 1}</td>
-                      <td className="py-3 px-4">{s.product_name || s.productId}</td>
-                      <td className="py-3 px-4">{s.quantity}</td>
-                      <td className="py-3 px-4">₦{Number(s.price).toLocaleString()}</td>
-                      <td className="py-3 px-4 font-semibold">
-                        ₦{(Number(s.price) * Number(s.quantity)).toLocaleString()}
+                      <td className="py-3 px-2 sm:px-4">{i + 1}</td>
+                      <td className="py-3 px-2 sm:px-4">
+                        {s.product_name || s.productId}
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="py-3 px-2 sm:px-4">{s.quantity}</td>
+                      <td className="py-3 px-2 sm:px-4">
+                        ₦{Number(s.price).toLocaleString()}
+                      </td>
+                      <td className="py-3 px-2 sm:px-4 font-semibold">
+                        ₦
+                        {(Number(s.price) * Number(s.quantity)).toLocaleString()}
+                      </td>
+                      <td className="py-3 px-2 sm:px-4">
                         {new Date(s.created_at).toLocaleString()}
                       </td>
                     </tr>

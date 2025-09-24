@@ -12,13 +12,11 @@ export default function Invoices() {
   const [dailySales, setDailySales] = useState([]);
   const token = localStorage.getItem("token");
 
-  // Build list of the last 5 years for the dropdown
   useEffect(() => {
     const current = new Date().getFullYear();
     setYears(Array.from({ length: 5 }, (_, i) => current - i));
   }, []);
 
-  // Fetch total sales per day for the selected year
   useEffect(() => {
     if (!token) return;
     apiFetch(`https://quantora-ap7u.onrender.com/api/sales/daily?year=${year}`, {
@@ -64,15 +62,15 @@ export default function Invoices() {
       <div className="flex-1 flex flex-col">
         <Topbar />
 
-        <main className="p-6 space-y-6">
+        <main className="px-2 sm:px-4 md:px-6 py-6 space-y-6">
           {/* ===== Year filter ===== */}
-          <div className="flex justify-between items-center mb-4">
-            <label className="text-lg font-semibold text-teal-700">
+          <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
+            <label className="text-base sm:text-lg font-semibold text-teal-700 flex flex-wrap items-center gap-2">
               Select Year:
               <select
                 value={year}
                 onChange={(e) => setYear(Number(e.target.value))}
-                className="ml-3 px-3 py-2 rounded border border-teal-300 bg-white
+                className="px-3 py-2 rounded border border-teal-300 bg-white
                            focus:outline-none focus:ring-2 focus:ring-teal-500"
               >
                 {years.map((y) => (
@@ -90,7 +88,7 @@ export default function Invoices() {
             animate={{ opacity: 1, y: 0 }}
             className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200"
           >
-            <table className="min-w-full border-collapse">
+            <table className="min-w-full text-sm sm:text-base border-collapse">
               <thead>
                 <tr className="bg-blue-600 text-white">
                   <th className="py-3 px-4">S/N</th>
@@ -102,7 +100,10 @@ export default function Invoices() {
               <tbody>
                 {dailySales.length === 0 ? (
                   <tr>
-                    <td colSpan="4" className="py-6 px-4 text-center text-gray-500">
+                    <td
+                      colSpan="4"
+                      className="py-6 px-4 text-center text-gray-500 text-sm sm:text-base"
+                    >
                       No sales found for {year}.
                     </td>
                   </tr>
@@ -144,3 +145,4 @@ export default function Invoices() {
     </div>
   );
 }
+

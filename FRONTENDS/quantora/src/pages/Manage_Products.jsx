@@ -114,7 +114,6 @@ export default function ManageProducts() {
     setShowForm(true);
   };
 
-  // Filter products based on search term
   const filteredProducts = products.filter((p) => {
     const term = searchTerm.toLowerCase();
     return (
@@ -130,7 +129,7 @@ export default function ManageProducts() {
       <div className="flex-1 flex flex-col">
         <Topbar title="Manage Products" />
 
-        <main className="p-6 space-y-6">
+        <main className="px-2 sm:px-4 md:px-6 py-6 space-y-6">
           {/* Header Row */}
           <div className="flex flex-wrap justify-between items-center gap-4">
             <input
@@ -138,7 +137,7 @@ export default function ManageProducts() {
               placeholder="Search products..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-1 min-w-[180px] px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
               onClick={() => {
@@ -154,7 +153,7 @@ export default function ManageProducts() {
 
           {/* Add/Edit Product Modal */}
           {showForm && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <motion.form
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -202,17 +201,17 @@ export default function ManageProducts() {
                   className="w-full border p-2 rounded"
                 />
 
-                <div className="flex justify-end gap-3">
+                <div className="flex flex-wrap justify-end gap-3">
                   <button
                     type="button"
                     onClick={() => setShowForm(false)}
-                    className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+                    className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 w-full sm:w-auto"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700"
+                    className="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700 w-full sm:w-auto"
                   >
                     {editingId ? "Update" : "Save"}
                   </button>
@@ -227,7 +226,7 @@ export default function ManageProducts() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <table className="min-w-full text-left border-collapse">
+            <table className="min-w-full text-left border-collapse text-sm sm:text-base">
               <thead className="bg-blue-100 text-gray-700">
                 <tr>
                   <th className="py-3 px-4">Name</th>
@@ -238,6 +237,13 @@ export default function ManageProducts() {
                 </tr>
               </thead>
               <tbody>
+                {filteredProducts.length === 0 && (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4 text-gray-500">
+                      No products found.
+                    </td>
+                  </tr>
+                )}
                 {filteredProducts.map((p) => (
                   <motion.tr
                     key={p.id}
@@ -246,7 +252,7 @@ export default function ManageProducts() {
                     animate={{ opacity: 1 }}
                   >
                     <td className="py-3 px-4">{p.name}</td>
-                    <td className="py-3 px-4">${p.price}</td>
+                    <td className="py-3 px-4">${Number(p.price).toFixed(2)}</td>
                     <td className="py-3 px-4">{p.units}</td>
                     <td className="py-3 px-4">{p.category}</td>
                     <td className="py-3 px-4 flex justify-center gap-3">
