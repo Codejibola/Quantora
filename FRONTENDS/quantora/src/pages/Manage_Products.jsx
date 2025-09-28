@@ -252,7 +252,7 @@ export default function ManageProducts() {
                     animate={{ opacity: 1 }}
                   >
                     <td className="py-3 px-4">{p.name}</td>
-                    <td className="py-3 px-4">${Number(p.price).toFixed(2)}</td>
+                    <td className="py-3 px-4">₦{Number(p.price).toFixed(2)}</td>
                     <td className="py-3 px-4">{p.units}</td>
                     <td className="py-3 px-4">{p.category}</td>
                     <td className="py-3 px-4 flex justify-center gap-3">
