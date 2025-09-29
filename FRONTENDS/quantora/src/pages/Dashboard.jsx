@@ -1,6 +1,6 @@
-//eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
@@ -17,13 +17,25 @@ const data = [
 
 export default function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative">
       <Sidebar isOpen={menuOpen} setIsOpen={setMenuOpen} />
 
       <div className="flex-1 flex flex-col">
-        <Topbar onMenuClick={() => setMenuOpen(true)} />
+        <Topbar
+          onMenuClick={() => setMenuOpen(true)}
+          userName={currentUser?.name} 
+        />
 
         <main className="flex-1 p-8 space-y-8">
           {/* Cards */}
