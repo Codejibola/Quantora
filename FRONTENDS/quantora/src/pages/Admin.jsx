@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import { motion } from "framer-motion";
 import { useState } from "react";
-import apiFetch from "../utils/apiFetch";
+// import apiFetch from "../utils/apiFetch";
 import { useNavigate } from "react-router-dom";
 
 export default function Admin() {

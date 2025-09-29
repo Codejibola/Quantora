@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";   // ✅ add this
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
@@ -19,7 +20,6 @@ export default function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
@@ -34,20 +34,35 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col">
         <Topbar
           onMenuClick={() => setMenuOpen(true)}
-          userName={currentUser?.name} 
+          userName={currentUser?.name}
         />
 
         <main className="flex-1 p-8 space-y-8">
-          {/* Cards */}
+          {/*  Cards with routes */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            <Card title="Manage Products" icon="inventory_2" desc="Add, remove, and edit products" />
-            <Card title="Record Sales" icon="trending_up" desc="Track sales and revenue" />
-            <Card title="Invoices" icon="receipt_long" desc="View and manage invoices" />
+            <Card
+              title="Manage Products"
+              icon="inventory_2"
+              desc="Add, remove, and edit products"
+              to="/Manage_Products"             
+            />
+            <Card
+              title="Record Sales"
+              icon="trending_up"
+              desc="Track sales and revenue"
+              to="/recordSales"                
+            />
+            <Card
+              title="Invoices"
+              icon="receipt_long"
+              desc="View and manage invoices"
+              to="/invoices"             // <-- route for invoices page
+            />
           </motion.div>
 
           {/* Chart + Activities */}
@@ -92,11 +107,15 @@ export default function Dashboard() {
   );
 }
 
-function Card({ title, desc, icon }) {
+
+function Card({ title, desc, icon, to }) {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
-      className="bg-white rounded-xl shadow p-6 flex flex-col items-center text-center cursor-pointer"
+      onClick={() => navigate(to)}      
+      className="bg-white rounded-xl shadow p-6 flex flex-col items-center text-center cursor-pointer hover:shadow-md transition"
     >
       <span className="material-icons text-blue-600 text-4xl mb-2">{icon}</span>
       <h3 className="font-semibold text-lg">{title}</h3>
