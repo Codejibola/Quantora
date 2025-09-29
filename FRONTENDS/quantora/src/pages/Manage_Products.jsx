@@ -20,6 +20,15 @@ export default function ManageProducts() {
   const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("token");
   const [menuOpen, setMenuOpen] = useState(false); 
+  const [currentUser, setCurrentUser] = useState(null);
+
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []); 
 
   const fetchProducts = () => {
     if (!token) return;
@@ -92,7 +101,7 @@ export default function ManageProducts() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      const res = await fetch(`https://quantora-ap7u.onrender.com/api/products/${id}`, {
+      const res = await apiFetch(`https://quantora-ap7u.onrender.com/api/products/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -127,7 +136,10 @@ export default function ManageProducts() {
       <Sidebar isOpen={menuOpen} setIsOpen={setMenuOpen} />
 
       <div className="flex-1 flex flex-col">
-        <Topbar onMenuClick={() => setMenuOpen(true)} />
+        <Topbar
+          onMenuClick={() => setMenuOpen(true)}
+          userName={currentUser?.name} 
+        />
 
         <main className="px-2 sm:px-4 md:px-6 py-6 space-y-6">
           {/* Header Row */}

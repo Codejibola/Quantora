@@ -12,6 +12,16 @@ export default function Invoices() {
   const [dailySales, setDailySales] = useState([]);
   const token = localStorage.getItem("token");
   const [menuOpen, setMenuOpen] = useState(false); 
+  const [currentUser, setCurrentUser] = useState(null);
+  
+  
+    useEffect(() => {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+        setCurrentUser(JSON.parse(savedUser));
+      }
+    }, []); 
+  
 
   useEffect(() => {
     const current = new Date().getFullYear();
@@ -61,7 +71,10 @@ export default function Invoices() {
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
       <Sidebar isOpen={menuOpen} setIsOpen={setMenuOpen} />
       <div className="flex-1 flex flex-col">
-        <Topbar onMenuClick={() => setMenuOpen(true)} />
+        <Topbar
+          onMenuClick={() => setMenuOpen(true)}
+          userName={currentUser?.name} 
+        />
 
         <main className="px-2 sm:px-4 md:px-6 py-6 space-y-6">
           {/* ===== Year filter ===== */}

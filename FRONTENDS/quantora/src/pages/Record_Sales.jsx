@@ -5,6 +5,10 @@ import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 import apiFetch from "../utils/apiFetch.js";
 
+
+
+
+
 export default function RecordSales() {
   const token = localStorage.getItem("token");
   const [products, setProducts] = useState([]);
@@ -13,9 +17,17 @@ export default function RecordSales() {
   const [price, setPrice] = useState("");
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // <— for mobile sidebar
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  /* ------------ Fetch Helpers ------------ */
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []);
+
   const fetchProducts = () => {
     if (!token) return;
     apiFetch("https://quantora-ap7u.onrender.com/api/products", {
@@ -90,8 +102,12 @@ export default function RecordSales() {
       <Sidebar open={menuOpen} onClose={() => setMenuOpen(false)} />
 
       <div className="flex-1 flex flex-col">
-        {/* Pass toggle handler to Topbar */}
-        <Topbar title="Record Sales" onMenuClick={() => setMenuOpen(true)} />
+        {/* toggle handler to Topbar */}
+        <Topbar
+          onMenuClick={() => setMenuOpen(true)}
+          userName={currentUser?.name} 
+        />
+        
 
         <main className="p-4 sm:p-6 space-y-6">
           {/* -------- Sales Entry Form -------- */}
