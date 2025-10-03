@@ -59,7 +59,7 @@ export default function Invoices() {
       alert(err.message);
     }
   };
-
+ //review this  
   const handleView = (date) => {
     window.open(
       `https://quantora-ap7u.onrender.com/api/sales/daily/${date}/view?token=${token}`,
